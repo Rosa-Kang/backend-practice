@@ -17,14 +17,18 @@ import {
   useTheme,
   useMediaQuery,
   TextField,
-  Collapse
+  Collapse,
+  ListItemIcon
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ReactMarkdown from 'react-markdown';
 import { questions } from './data';
+import { Question } from './types';
 
 function App() {
+  const [expandedTopics, setExpandedTopics] = useState<Set<string>>(new Set());
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -32,8 +36,28 @@ function App() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const handleQuestionClick = (index: number) => {
-    setCurrentQuestion(index);
+  // Group questions by topic
+  const questionsByTopic = questions.reduce((acc, question) => {
+    if (!acc[question.topic]) {
+      acc[question.topic] = [];
+    }
+    acc[question.topic].push(question);
+    return acc;
+  }, {} as Record<string, Question[]>);
+
+  const toggleTopic = (topic: string) => {
+    setExpandedTopics(prev => {
+      const newSet = new Set<string>();
+      // If the clicked topic is not already expanded, add it to the set
+      if (!prev.has(topic)) {
+        newSet.add(topic);
+      }
+      return newSet;
+    });
+  };
+
+  const handleQuestionClick = (questionIndex: number) => {
+    setCurrentQuestion(questionIndex);
     setShowAnswer(false);
     setUserCode('');
     if (isMobile) {
@@ -80,37 +104,94 @@ function App() {
       </Box>
       <Divider />
       <List>
-        {questions.map((question, index) => (
-          <ListItem key={question.id} disablePadding>
-            <ListItemButton
-              selected={currentQuestion === index}
-              onClick={() => handleQuestionClick(index)}
+        {Object.entries(questionsByTopic).map(([topic, topicQuestions]) => (
+          <React.Fragment key={topic}>
+            <ListItemButton 
+              onClick={() => toggleTopic(topic)}
               sx={{
-                transition: 'all 0.2s ease-in-out',
+                backgroundColor: expandedTopics.has(topic) 
+                  ? 'rgba(103, 58, 183, 0.05)' 
+                  : 'rgba(245, 245, 245, 0.8)',
                 '&:hover': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                  transform: 'translateX(4px)',
+                  backgroundColor: 'rgba(103, 58, 183, 0.08)',
                 },
-                '&.Mui-selected': {
-                  backgroundColor: 'rgba(25, 118, 210, 0.08)',
-                  '&:hover': {
-                    backgroundColor: 'rgba(25, 118, 210, 0.12)',
-                  },
+                '&:focus': {
+                  backgroundColor: 'rgba(103, 58, 183, 0.12)',
                 },
+                '& .MuiListItemIcon-root': {
+                  minWidth: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                },
+                transition: 'background-color 0.2s ease-in-out',
+                borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+                py: 1,
               }}
             >
               <ListItemText 
-                primary={`${question.id}. ${question.title}`}
+                primary={topic}
                 primaryTypographyProps={{
-                  style: {
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
+                  sx: {
+                    fontWeight: 'medium',
+                    fontSize: '0.95rem',
+                    color: expandedTopics.has(topic) 
+                      ? 'primary.main' 
+                      : 'text.primary',
+                    lineHeight: 1.5,
                   }
                 }}
               />
+              <ListItemIcon sx={{ 
+                color: 'primary.main',
+                transition: 'transform 0.2s ease-in-out',
+                transform: expandedTopics.has(topic) ? 'rotate(0deg)' : 'rotate(-90deg)',
+                minWidth: 'auto',
+                marginLeft: 1,
+              }}>
+                <ExpandMoreIcon fontSize="small" />
+              </ListItemIcon>
             </ListItemButton>
-          </ListItem>
+            <Collapse in={expandedTopics.has(topic)} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {topicQuestions.map((question, index) => {
+                  // Find the global index of this question
+                  const globalIndex = questions.findIndex(q => q.id === question.id);
+                  return (
+                    <ListItemButton
+                      key={question.id}
+                      selected={currentQuestion === globalIndex}
+                      onClick={() => handleQuestionClick(globalIndex)}
+                      sx={{ 
+                        pl: 4,
+                        '&:hover': {
+                          backgroundColor: 'rgba(103, 58, 183, 0.04)',
+                        },
+                        '&.Mui-selected': {
+                          backgroundColor: 'rgba(103, 58, 183, 0.08)',
+                          '&:hover': {
+                            backgroundColor: 'rgba(103, 58, 183, 0.12)',
+                          },
+                        },
+                      }}
+                    >
+                      <ListItemText 
+                        primary={`${question.id}. ${question.title}`}
+                        primaryTypographyProps={{
+                          style: {
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontSize: '0.9rem',
+                          }
+                        }}
+                      />
+                    </ListItemButton>
+                  );
+                })}
+              </List>
+            </Collapse>
+          </React.Fragment>
         ))}
       </List>
     </Box>
@@ -136,7 +217,7 @@ function App() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" className="app-title">
-            Backend Practice Questions
+            Coding Practice Questions
           </Typography>
         </Toolbar>
       </AppBar>
@@ -145,6 +226,9 @@ function App() {
         variant={isMobile ? "temporary" : "persistent"}
         open={drawerOpen}
         onClose={toggleDrawer}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile
+        }}
         sx={{
           width: drawerOpen ? 250 : 0,
           flexShrink: 0,
