@@ -26,7 +26,7 @@ export const questions: Question[] = [
     id: 4,
     title: "JavaScript Question - Function Composition",
     question: "Given an array of functions [f1, f2, f3, ..., fn], return a new function fn that is the function composition of the array of functions. The function composition of [f(x), g(x), h(x)] is fn(x) = f(g(h(x))).",
-    answer: "var compose = function(functions) { \n   let length = functions.length; \n return function(x) { \n for(let i=length-1; i>=0; i--) { \n x = functions[i](x);\n } \n return x;\n }\n };",
+    answer: "var compose = function(functions) { \n   let length = functions.length; \n   return function(x) { \n   for(let i=length-1; i>=0; i--) { \n   x = functions[i](x);\n } \n   return x;\n   }\n };",
     topic: "JavaScript Fundamentals"
   },
   {
