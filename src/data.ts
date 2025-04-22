@@ -45,6 +45,13 @@ export const questions: Question[] = [
   },
   {
     id: 6,
+    title: "JavaScript Question - Sleep",
+    question: "Given a positive integer millis, write an asynchronous function that sleeps for millis milliseconds. It can resolve any value.",
+    answer: "async function sleep(millis) {\n    return new Promise((resolve, reject) => {\n    setTimeout(()=>{\n     resolve();\n       }, millis);\n });",
+    topic: "JavaScript Fundamentals"
+  },
+  {
+    id: 6,
     title: "Create a simple Express server",
     question: "Write code to create an Express server that listens on port 3000 and has a single route '/' which returns 'Hello, World!'",
     answer: "const express = require('express');\n const app = express();\n\napp.get('/', (req, res) => {\n  res.send('Hello, World!');\n});\n\napp.listen(3000, () => console.log('Server started on port 3000'));",
