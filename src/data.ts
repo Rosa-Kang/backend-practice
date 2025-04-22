@@ -2,6 +2,13 @@ import { Question } from './types';
 
 export const questions: Question[] = [
   {
+    id:0,
+    title: "JavaScript & React - REST API",
+    question: "Give a simple case of data fetching in React App. Say it as an example of REST API data fetching",
+    answer: "import { useState, useEffect } from 'react'; \n export default function App() {\n   const [advice, setAdvice] = useState('');\n   const fetchAdvice = async () => {\n    try {\n      const res = await axios.get('https://api.adviceslip.com/advice');\n      setAdvice(res.data.slip.advice);\n    } catch (error) {\n       console.error('Error fetching advice:', error);\n    }\n   };\n   useEffect(() => {\n   fetchAdvice();\n   }, []); \n   return \n       <div className='app'>\n         <div className='card'> \n           <h1 className='heading'>{advice}</h1> \n           <button className='button' onClick={fetchAdvice}>\n            <span>GIVE ME ADVICE!</span>\n           </button>\n         </div> \n       </div> \n     ); \n   }",
+    topic: "React API fetch with axios"
+  },
+  {
     id: 1,
     title: "JavaScript Question - Memoize",
     question: "Given a function fn, return a memoized version of that function. \nA memoized function is a function that will never be called twice with the same inputs. Instead it will return a cached value. \nYou can assume there are 3 possible input functions: sum, fib, and factorial. \nsum accepts two integers a and b and returns a + b. Assume that if a value has already been cached for the arguments (b, a) where a != b, it cannot be used for the arguments (a, b). For example, if the arguments are (3, 2) and (2, 3), two separate calls should be made.",
