@@ -17,51 +17,65 @@ export const questions: Question[] = [
   },
   {
     id: 2,
+    title: "JavaScript Question - CounterII",
+    question: "Write a function createCounter. It should accept an initial integer init. It should return an object with three functions. The three functions are:increment() increases the current value by 1 and then returns it. decrement() reduces the current value by 1 and then returns it. reset() sets the current value to init and then returns it.",
+    answer: "var createCounter = function(init) {\n   let curr = init;\n   return {\n     increment: () =>  ++curr,\n     decrement: () =>  --curr,\n     reset: () => (curr = init),\n   }\n};",
+    topic: "JavaScript Fundamentals"
+  },
+  {
+    id: 3,
     title: "JavaScript Question - Memoize",
     question: "Given a function fn, return a memoized version of that function. \nA memoized function is a function that will never be called twice with the same inputs. Instead it will return a cached value. \nYou can assume there are 3 possible input functions: sum, fib, and factorial. \nsum accepts two integers a and b and returns a + b. Assume that if a value has already been cached for the arguments (b, a) where a != b, it cannot be used for the arguments (a, b). For example, if the arguments are (3, 2) and (2, 3), two separate calls should be made.",
     answer: "function memoize(fn) {\n  const cache = new Map();\n\n  return function(...args) {\n    const key = JSON.stringify(args);\n    if (cache.has(key)) return cache.get(key);\n    const result = fn(...args);\n    cache.set(key, result);\n    return result;\n  };\n}",
     topic: "JavaScript Fundamentals"
   },
   {
-    id: 3,
+    id: 4,
     title: "JavaScript Question - Filtered Array",
     question: "Given an integer array arr and a filtering function fn, return a filtered array filteredArr. \nThe fn function takes one or two arguments: \narr[i] - number from the arr \ni - index of arr[i] \nfilteredArr should only contain the elements from the arr for which the expression fn(arr[i], i) evaluates to a truthy value. A truthy value is a value where Boolean(value) returns true. \nPlease solve it without the built-in Array.filter method.",
     answer: "function filter(arr, fn) {\n  const filteredArr = [];\n  for (let i = 0; i < arr.length; i++) {\n    if (fn(arr[i], i)) {\n      filteredArr.push(arr[i]);\n    }\n  }\n  return filteredArr;\n}",
     topic: "JavaScript Fundamentals"
   },
   {
-    id: 4,
+    id: 5,
     title: "JavaScript Question - Array Reduce Transformation",
     question: "Given an integer array nums, a reducer function fn, and an initial value init, return the final result obtained by executing the fn function on each element of the array, sequentially, passing in the return value from the calculation on the preceding element. \nThis result is achieved through the following operations: val = fn(init, nums[0]), val = fn(val, nums[1]), val = fn(val, nums[2]), ... until every element in the array has been processed. The ultimate value of val is then returned. \nIf the length of the array is 0, the function should return init. \nPlease solve it without using the built-in Array.reduce method.",
     answer: "var reduce = function(nums, fn, init) {\n  for (let i = 0; i < nums.length; i++) {\n    init = fn(init, nums[i]);\n  }\n  return init;\n};",
     topic: "JavaScript Fundamentals"
   },
   {
-    id: 5,
+    id: 6,
     title: "JavaScript Question - Function Composition",
     question: "Given an array of functions [f1, f2, f3, ..., fn], return a new function fn that is the function composition of the array of functions. The function composition of [f(x), g(x), h(x)] is fn(x) = f(g(h(x))).",
     answer: "var compose = function(functions) { \n   let length = functions.length; \n   return function(x) { \n   for(let i=length-1; i>=0; i--) { \n   x = functions[i](x);\n } \n   return x;\n   }\n };",
     topic: "JavaScript Fundamentals"
   },
   {
-    id: 6,
+    id: 7,
     title: "JavaScript Question - Allow One Function Call",
     question: "Given a function fn, return a new function that is identical to the original function except that it ensures fn is called at most once. \nThe first time the returned function is called, it should return the same result as fn. \nEvery subsequent time it is called, it should return undefined.",
     answer: "var once = function(fn) {\n    let called = false;\n    return function(...args){\n        if(!called) {\n            called = true;\n            return fn(...args);\n        } else {\n            return undefined;\n        }\n    }\n};",
     topic: "JavaScript Fundamentals"
   },
   {
-    id: 7,
+    id: 8,
     title: "JavaScript Question - Sleep",
     question: "Given a positive integer millis, write an asynchronous function that sleeps for millis milliseconds. It can resolve any value.",
     answer: "async function sleep(millis) {\n    return new Promise((resolve, reject) => {\n    setTimeout(()=>{\n     resolve();\n       }, millis);\n });",
     topic: "JavaScript Fundamentals"
   },
   {
-    id: 8,
+    id: 9,
     title: "JavaScript Question - Timeout Cancellation",
     question: "Given a function fn, an array of arguments args, and a timeout t in milliseconds, return a cancel function cancelFn.\nAfter a delay of cancelTimeMs, the returned cancel function cancelFn will be invoked.\nInitially, the execution of the function fn should be delayed by t milliseconds.\n \nIf, before the delay of t milliseconds, the function cancelFn is invoked, it should cancel the delayed execution of fn. Otherwise, if cancelFn is not invoked within the specified delay t, fn should be executed with the provided args as arguments.",
     answer: "var cancellable = function(fn, args, t) {\n  //setTimeout function returns an id, let's save it. \n   const id = setTimeout(()=> fn(...args), t)\n\n  //clearTimeout function can use the id to clear setTimeout \n   const cancelFn = () => clearTimeout(id);\n\n   return cancelFn;\n};",
+    topic: "JavaScript Fundamentals"
+  },
+  {
+    id: 10,
+    title: "JavaScript Question - Interval Cancellation",
+    question: "Given a function fn, an array of arguments args, and an interval time t, return a cancel function cancelFn. After a delay of cancelTimeMs, the returned cancel function cancelFn will be invoked.The function fn should be called with args immediately and then called again every t milliseconds until cancelFn is called at cancelTimeMs ms.",
+    answer: "var cancellable = function(fn, args, t) {\n   fn(...args);\n\n   const id = setInterval(()=>fn(...args), t);\n\n   const cancelFn = () => {\n      clearInterval(id)\n    }\n  return cancelFn;\n};\n\n Or,\n\nvar cancellable = function(fn, args, t) {\n    fn(...args);\n    const interval = setInterval(()=>{fn(...args)},t);\n    return ()=> clearInterval(interval);\n};",
     topic: "JavaScript Fundamentals"
   },
   {
