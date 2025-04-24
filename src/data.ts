@@ -79,6 +79,13 @@ export const questions: Question[] = [
     topic: "JavaScript Fundamentals"
   },
   {
+    id: 11,
+    title: "JavaScript Question - Promise Time Limit",
+    question: "Given an asynchronous function fn and a time t in milliseconds, return a new time limited version of the input function. fn takes arguments provided to the time limited function. The time limited function should follow these rules: If the fn completes within the time limit of t milliseconds, the time limited function should resolve with the result. If the execution of the fn exceeds the time limit, the time limited function should reject with the string 'Time Limit Exceeded'.",
+    answer: "const timeLimit = (fn, t) => {\n   return async (...args) => {\n     return Promise.race([\n       fn(...args),\n       new Promise((_, reject) => setTimeout(() => reject('Time Limit Exceeded'), t))\n     ]);\n   };\n };\n\n\n#Promise 와 Promise.race 이론#\n\nconst p1 = new Promise((res, rej) => setTimeout(() => rej('🔥 에러!'), 500));\nconst p2 = new Promise((res) => setTimeout(() => res('✅ 성공'), 1000))\nPromise.race([p1, p2])\n  .then(console.log)\n  .catch(console.error); ",
+    topic: "JavaScript Fundamentals"
+  },
+  {
     id: 1,
     title: "Create a simple Express server",
     question: "Write code to create an Express server that listens on port 3000 and has a single route '/' which returns 'Hello, World!'",
