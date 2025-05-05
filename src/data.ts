@@ -107,6 +107,20 @@ export const questions: Question[] = [
     topic: "JavaScript Fundamentals"
   },
   {
+    id: 15,
+    title: "JavaScript Question - Is Object Empty",
+    question: "Given an object or an array, return if it is empty. An empty object contains no key-value pairs. An empty array contains no elements. You may assume the object or array is the output of JSON.parse.",
+    answer: "var isEmpty = function(obj) {\n   if(Array.isArray(obj)) {\n     return obj.length === 0;\n   } else {\n     return Object.keys(obj).length === 0;\n   }\n}\n\nOR,\n\nvar isEmpty = function(obj) {\n   if (Object.keys(obj).length === 0){\n     return true;\n   }\n  return false;\n}",
+    topic: "JavaScript Fundamentals"
+  },
+  {
+    id: 16,
+    title: "JavaScript Question - Chunk Array",
+    question: "Given an array arr and a chunk size size, return a chunked array. A chunked array contains the original elements in arr, but consists of subarrays each of length size. The length of the last subarray may be less than size if arr.length is not evenly divisible by size. You may assume the array is the output of JSON.parse. In other words, it is valid JSON. Please solve it without using lodash's _.chunk function.",
+    answer: "var chunk = function(arr, size) {\n   let subArr = [];\n   for(let i=0; i < arr.length; i+=size) {\n     subArr.push(arr.slice(i, i+size))\n   }\n  return subArr;\n};",
+    topic: "JavaScript Fundamentals"
+  },
+  {
     id: 1,
     title: "Create a simple Express server",
     question: "Write code to create an Express server that listens on port 3000 and has a single route '/' which returns 'Hello, World!'",
