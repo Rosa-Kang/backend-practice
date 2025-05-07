@@ -134,6 +134,13 @@ export const questions: Question[] = [
     answer: "Array.prototype.groupBy = function(fn) {\n //grouped(array) is an object where each key is the output of fn(arr[i])\n //item is the item inside this array\n  return this.reduce((grouped, item) => {\n     let key = fn(item);\n     if(!grouped[key]) grouped[key] = [];\n     grouped[key].push(item);\n     return grouped;\n  } , {})\n};",
     topic: "JavaScript Fundamentals"
   },
+   {
+    id: 19,
+    title: "JavaScript Question - Sort By",
+    question: "Given an array arr and a function fn, return a sorted array sortedArr. You can assume fn only returns numbers and those numbers determine the sort order of sortedArr. sortedArr must be sorted in ascending order by fn output.  You may assume that fn will never duplicate numbers for a given array.",
+    answer: "var sortBy = function(arr, fn) {\n   return arr.slice().sort((a,b) => fn(a) - fn(b));\n };",
+    topic: "JavaScript Fundamentals"
+  },
   {
     id: 1,
     title: "Create a simple Express server",
