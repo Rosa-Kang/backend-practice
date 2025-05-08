@@ -148,6 +148,13 @@ export const questions: Question[] = [
     answer: "var join = function(arr1, arr2) {\n   const map = new Map();\n\n   for(const obj of arr1) {\n     map.set(obj.id, {...obj});\n  }\n\n   for(const obj of arr2) {\n   if(map.has(obj.id)){\n      map.set(obj.id, {...map.get(obj.id), ...obj})\n   } else {\n      map.set(obj.id, {...obj})\n   }\n }\n  return Array.from(map.values()).sort((a,b) => a.id - b.id)\n};",
     topic: "JavaScript Fundamentals"
   },
+   {
+    id: 21,
+    title: "JavaScript Question - Recursive Function/Deeply Nested Array",
+    question: "Given a multi-dimensional array arr and a depth n, return a flattened version of that array. A multi-dimensional array is a recursive data structure that contains integers or other multi-dimensional arrays. A flattened array is a version of that array with some or all of the sub-arrays removed and replaced with the actual elements in that sub-array. This flattening operation should only be done if the current depth of nesting is less than n. The depth of the elements in the first array are considered to be 0. Please solve it without the built-in Array.flat method.",
+    answer: "var flat = function (arr, n) {\n   if(n<=0) return arr;\n   const result = [];\n   for(const item of arr) {\n     if(Array.isArray(item) && n>0) {\n        result.push(...flat(item, n-1));\n     } else {\n       result.push(item)\n       }\n    }\n   return result;\n};",
+    topic: "JavaScript Fundamentals"
+  },
   {
     id: 1,
     title: "Create a simple Express server",
