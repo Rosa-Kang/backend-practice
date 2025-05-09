@@ -155,6 +155,13 @@ export const questions: Question[] = [
     answer: "var flat = function (arr, n) {\n   if(n<=0) return arr;\n   const result = [];\n   for(const item of arr) {\n     if(Array.isArray(item) && n>0) {\n        result.push(...flat(item, n-1));\n     } else {\n       result.push(item)\n       }\n    }\n   return result;\n};",
     topic: "JavaScript Fundamentals"
   },
+ {
+    id: 22,
+    title: "JavaScript Question - Compact Object",
+    question: "Given an object or array obj, return a compact object.  A compact object is the same as the original object, except with keys containing falsy values removed. This operation applies to the object and any nested objects. Arrays are considered objects where the indices are keys. A value is considered falsy when Boolean(value) returns false. You may assume the obj is the output of JSON.parse. In other words, it is valid JSON.",
+    answer: "var compactObject = function(obj) {\n  if (obj === null || obj === 0 || obj === false || obj === "") return null;\n\n  if (Array.isArray(obj)) return obj.map(compactObject).filter(val => val !== null);\n\n  if (typeof obj === 'object') {\n     return Object.fromEntries(\n       Object.entries(obj)\n         .map(([k, v]) => [k, compactObject(v)])\n         .filter(([_, v]) => v !== null)\n     );\n}\n\nreturn obj;\n};",
+    topic: "JavaScript Fundamentals"
+  },
   {
     id: 1,
     title: "Create a simple Express server",
